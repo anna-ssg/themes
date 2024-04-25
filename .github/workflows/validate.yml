@@ -1,0 +1,87 @@
+name: Validate Themes
+
+on:
+  push:
+    tags:
+      - '*'
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+      - name: validate themes
+        run: |
+          root_dir=$(pwd)
+          themes=$(jq -r '.themes | length' themes.json)
+
+          for ((i=0; i<$themes; i++)); do
+            cd $root_dir
+            theme_name=$(jq -r ".themes[$i].name" themes.json)
+            theme_repo=$(jq -r ".themes[$i].repository" themes.json)
+            base_dir=$(jq -r ".themes[$i].basedir" themes.json)
+            
+            git clone --depth 1 --branch main $theme_repo $theme_name
+            rm -rf ${theme_name}/.git
+            cd $theme_name/$base_dir
+            
+            check_file() {
+              if [ ! -f "$1" ]; then
+                echo "Error: $theme_name is missing $2"
+                exit 1
+              fi
+            }
+
+            check_directory() {
+              if [ ! -d "$1" ]; then
+                echo "Error: $theme_name does not have a $2 directory"
+                exit 1
+              fi
+            }
+            
+            check_file "static/style.css" "static/style.css"
+            #check_directory "fonts" "fonts"
+            
+            # Check required layout files
+            required_layout_files=(
+              "layout/config.yml"
+              "layout/note.html"
+              "layout/notes.html"
+              "layout/page.html"
+              "layout/posts.html"
+              "layout/robots.txt"
+              "layout/tag-subpage.html"
+              "layout/tags.html"
+            )
+            for file in "${required_layout_files[@]}"; do
+              check_file "$file" "$file"
+            done
+            
+            # Check required partials files
+            required_partials=(
+              "layout/partials/footer.html"
+              "layout/partials/head.html"
+              "layout/partials/header.html"
+              "layout/partials/hover.html"
+              "layout/partials/search.html"
+            )
+            for partial in "${required_partials[@]}"; do
+              check_file "$partial" "$partial"
+            done
+
+            zip -r $root_dir/${theme_name}.zip *
+            rm -rf $root_dir/${theme_name}
+            echo "${theme_name}.zip" >> $root_dir/valid_themes.txt
+          done
+
+      - name: release
+        run: |
+          gh release create ${{ github.ref_name }} ./*.zip --generate-notes --title "version: ${{ github.ref_name }}" 
+        if: startsWith(github.ref, 'refs/tags/')
