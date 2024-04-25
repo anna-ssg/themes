@@ -1,7 +1,7 @@
 {
   "themes": [
     {
-      "name": "theme1",
+      "name": "default",
       "repository": "https://github.com/anna-ssg/theme1.git",
       "support": "https://github.com/anna-ssg",
       "basedir": ".",
@@ -9,16 +9,8 @@
       "license": "MIT"
     },
     {
-      "name": "theme2",
-      "repository": "https://github.com/anna-ssg/theme1.git",
-      "support": "https://github.com/anna-ssg",
-      "basedir": ".",
-      "compat": "v2.0.0",
-      "license": "MIT"
-    },
-    {
-      "name": "theme3",
-      "repository": "https://github.com/anna-ssg/theme1.git",
+      "name": "newcss",
+      "repository": "https://github.com/anna-ssg/theme2.git",
       "support": "https://github.com/anna-ssg",
       "basedir": ".",
       "compat": "v2.0.0",
