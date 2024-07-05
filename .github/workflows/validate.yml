@@ -53,7 +53,7 @@ jobs:
             required_layout_files=(
               "layout/config.yml"
               "layout/robots.txt"
-              "layout/all-posts.yml"
+              "layout/all-posts.html"
               "layout/page.html"
               "layout/collection-subpage.html"
               "layout/collections.html"
