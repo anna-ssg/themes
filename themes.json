@@ -5,7 +5,7 @@
       "repository": "https://github.com/anna-ssg/theme1.git",
       "support": "https://github.com/anna-ssg",
       "basedir": ".",
-      "compat": "v2.0.0",
+      "compat": "v3.0.0",
       "license": "MIT"
     },
     {
@@ -13,7 +13,7 @@
       "repository": "https://github.com/anna-ssg/theme2.git",
       "support": "https://github.com/anna-ssg",
       "basedir": ".",
-      "compat": "v2.0.0",
+      "compat": "v3.0.0",
       "license": "MIT"
     }
   ]

@@ -23,7 +23,7 @@ jobs:
           root_dir=$(pwd)
           themes=$(jq -r '.themes | length' themes.json)
 
-          for ((i=0; i<$themes; i++)); do
+          for ((i = 0; i < $themes; i++)); do
             cd $root_dir
             theme_name=$(jq -r ".themes[$i].name" themes.json)
             theme_repo=$(jq -r ".themes[$i].repository" themes.json)
@@ -46,18 +46,17 @@ jobs:
                 exit 1
               fi
             }
-            
+          
             check_file "static/style.css" "static/style.css"
-            #check_directory "fonts" "fonts"
-            
+          
             # Check required layout files
             required_layout_files=(
               "layout/config.yml"
-              "layout/note.html"
-              "layout/notes.html"
-              "layout/page.html"
-              "layout/posts.html"
               "layout/robots.txt"
+              "layout/all-posts.yml"
+              "layout/page.html"
+              "layout/collection-subpage.html"
+              "layout/collections.html"
               "layout/tag-subpage.html"
               "layout/tags.html"
             )
@@ -67,15 +66,15 @@ jobs:
             
             # Check required partials files
             required_partials=(
-              "layout/partials/footer.html"
               "layout/partials/head.html"
               "layout/partials/header.html"
-              "layout/partials/hover.html"
-              "layout/partials/search.html"
             )
             for partial in "${required_partials[@]}"; do
               check_file "$partial" "$partial"
             done
+
+          # Check required fonts directory
+            check_directory "static/fonts" "static/fonts"
 
             zip -r $root_dir/${theme_name}.zip *
             rm -rf $root_dir/${theme_name}
