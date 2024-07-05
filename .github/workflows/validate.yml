@@ -51,7 +51,7 @@ jobs:
           
             # Check required layout files
             required_layout_files=(
-              "layout/config.yml"
+              "layout/config.json"
               "layout/robots.txt"
               "layout/all-posts.html"
               "layout/page.html"
