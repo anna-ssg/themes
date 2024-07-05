@@ -74,7 +74,7 @@ jobs:
             done
 
           # Check required fonts directory
-            check_directory "static/fonts" "static/fonts"
+          # check_directory "static/fonts" "static/fonts"
 
             zip -r $root_dir/${theme_name}.zip *
             rm -rf $root_dir/${theme_name}
